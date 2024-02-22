@@ -1,3 +1,5 @@
+require('dotenv').config({path: '../../.env'});
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -10,9 +12,9 @@ const {Server} = require("socket.io");
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'cwm',
-    password: 'KACg2017',
-    port: '5432'
+    database: process.env.SQL_DATABSE,
+    password: process.env.SQL_PASSWORD,
+    port: process.env.SQL_PORT
 })
 
 app.use(express.json());
@@ -21,7 +23,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "*", // Be more specific in production!
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
