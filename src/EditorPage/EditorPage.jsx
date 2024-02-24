@@ -31,7 +31,6 @@ export default function EditorPage() {
 
     const handleTitle = (e) => {
         setTitle(e.target.value)
-        console.log(title);
         debounceSaveTitle(e.target.value, roomId)
     }
 
@@ -61,7 +60,7 @@ export default function EditorPage() {
         async function checkAccess() {
             const request = await fetch(`http://localhost:3636/checkaccess?username=${username}&pageID=${roomId}`)
             const response = await request.json();
-            console.log(response.access)
+            console.log('access response', response);
 
             if (response.access === "Permitted") {
                 setAccess(true)

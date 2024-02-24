@@ -142,7 +142,7 @@ app.get('/deletepage', async(req, res) => {
         res.json('complete');
     } catch (err) {
         console.log(err)
-        res.status(500).json('oops girl something happened when deleting content..');
+        res.status(500).json('oops something happened when deleting content..');
     }
 })
 
@@ -179,6 +179,7 @@ app.get('/getsharedpages', async(req, res) => {
 app.get('/checkaccess', async(req, res) => {
     const username= req.query.username;
     const pageID = req.query.pageID;
+
     console.log(pageID, username);
 
     try {
@@ -192,7 +193,7 @@ app.get('/checkaccess', async(req, res) => {
         }
 
         if (secondCheck) {
-             let {rows} = await pool.query(`SELECT owner_username, share_with_username FROM share_pages WHERE page_id=$1`, [pageID])
+             let {rows} = await pool.query(`SELECT owner_username, title, share_with_username FROM share_pages WHERE page_id=$1`, [pageID])
             console.log(rows);
             if (rows[0] && rows[0].share_with_username === username) {
                 res.json({access: "Permitted", title: rows[0].title})

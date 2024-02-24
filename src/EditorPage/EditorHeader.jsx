@@ -9,6 +9,8 @@ export default function EditorHeader({title, setLanguage, setLanguageId, handleT
         return array.indexOf(item) === index && item !== username;
     });
 
+    console.log(title);
+
     return (
         <>
             <div className="background-dashboard-nav">
