@@ -92,6 +92,15 @@ export default function EditorPage() {
                 setTitle(newTitle);
             })
 
+            socketRef.current.on('processingCode', () => {
+                setProcessingCode(true)
+            })
+
+            socketRef.current.on('finishedProcessingCode', (output) => {
+                setCompilerResponse(output);
+                setProcessingCode(false)
+            })
+
             return () => socketRef.current.disconnect();
         }
 
@@ -114,7 +123,9 @@ export default function EditorPage() {
     const editorRef = useRef(null);
     const handleCodeSubmission = async () => {
         setProcessingCode(true);
+        socketRef.current.emit("processingCode")
         let output = await compileCode(editorRef.current.getValue(), languageId);
+        socketRef.current.emit('finishedProcessingCode', output)
         setCompilerResponse(output);
         setProcessingCode(false);
     }

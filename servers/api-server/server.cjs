@@ -85,6 +85,14 @@ io.on('connection', (socket) => {
     socket.on('connected', (data) => {
         console.log(data);
     })
+
+    socket.on('processingCode', () => {
+        io.to(roomID).emit('processingCode');
+    })
+
+    socket.on('finishedProcessingCode', (output) => {
+        io.to(roomID).emit('finishedProcessingCode', output);
+    })
 })
 
 
