@@ -33,7 +33,7 @@ exports.getPage = async (req, res) => {
 
     } catch (err) {
         console.log(err.msg);
-        res.status(500).json("oops error");
+        res.status(500).json("err getting page");
     }
 }
 
@@ -46,7 +46,7 @@ exports.deletePage = async (req, res) => {
         res.json('complete');
     } catch (err) {
         console.log(err)
-        res.status(500).json('oops something happened when deleting content..');
+        res.status(500).json('err deleting content..');
     }
 }
 
@@ -92,7 +92,7 @@ exports.savePageContent = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).json('oops girl something happened when saving..');
+        res.status(500).json('err saving..');
     }
 
 }
@@ -104,7 +104,7 @@ exports.getPageContent = async (req, res) => {
         res.json(rows[0].content);
     } catch (err) {
         console.log(err);
-        res.status(500).json('oops girl something happened when getting content..');
+        res.status(500).json('err getting content..');
 
     }
 }
