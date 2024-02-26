@@ -1,9 +1,31 @@
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {SignInButton, SignOutButton} from "@clerk/clerk-react";
+import {useState} from "react";
 
 export default function Hero() {
 
     let navigate = useNavigate();
+
+    const [navigateData, setNavigateData] = useState(null);
+
+    const createPublicPage = async () => {
+
+        const response = await fetch('http://localhost:3636/createpage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            console.log(await response.json());
+            return;
+        }
+
+        const data = await response.json();
+        setNavigateData({path:`/rooms/${data.pageID}`})
+
+    }
 
     return (
         <div className="background h-screen flex flex-col">
@@ -27,7 +49,7 @@ export default function Hero() {
                                 className="bg-white text-black px-4 py-2  border-2 border-black rounded heavy-shadow">
                                 Sign in
                             </button>
-                            <a href="#" className="c">
+                            <a href="#" onClick={createPublicPage} className="c">
                                 Create a page <span aria-hidden="true">→</span>
                             </a>
 
@@ -35,8 +57,6 @@ export default function Hero() {
                     </div>
                 </div>
 
-            <SignOutButton></SignOutButton>
-            <SignInButton></SignInButton>
 
                 {/*image container*/}
                 <div className="overflow-hidden flex-grow mx-32 justify-center ">
@@ -47,6 +67,8 @@ export default function Hero() {
                         alt=""
                     />
                 </div>
+
+            {navigateData && (<Navigate to={navigateData.path}/>)}
         </div>
     )
 }
