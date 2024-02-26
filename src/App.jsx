@@ -19,12 +19,7 @@ function App() {
             path: "/rooms/:roomId",
             element:
                 <>
-                    <SignedIn>
-                        <EditorPage/>
-                    </SignedIn>
-                    <SignedOut>
-                        <Navigate to="/"/>
-                    </SignedOut>
+                    <EditorPage/>
                 </>
 
         },
