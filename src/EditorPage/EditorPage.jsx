@@ -23,8 +23,10 @@ export default function EditorPage() {
     const [accessPermitted, setAccess] = useState(false);
     const [title, setTitle] = useState("Untitled");
 
-
-    const username = userData.user.username
+    let username;
+    if (userData.user) {
+        username = userData.user.username
+    } else username = 'guest1234'
 
     const [activeUsers, setActiveUsers] = useState([]);
     const [processingCode, setProcessingCode] = useState(false);
