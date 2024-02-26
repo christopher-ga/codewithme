@@ -19,8 +19,6 @@ exports.checkAccess = async (req, res) => {
     const username= req.query.username;
     const pageID = req.query.pageID;
 
-    console.log(pageID, username);
-
     try {
         let {rows} = await pool.query(`SELECT username, title FROM pages WHERE "pageID"=$1`, [pageID])
         let secondCheck = true;
@@ -36,7 +34,10 @@ exports.checkAccess = async (req, res) => {
             console.log(rows);
             if (rows[0] && rows[0].share_with_username === username) {
                 res.json({access: "Permitted", title: rows[0].title})
-            } else res.json("Denied")
+            } else {
+                console.log('denied');
+                res.json("Denied")
+            }
         }
 
     } catch (err) {

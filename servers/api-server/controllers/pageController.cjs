@@ -2,8 +2,23 @@ const {pool} = require('../../database.cjs');
 const {nanoid} = require("nanoid");
 
 exports.createPage = async (req, res) => {
-    let userId = req.body.userID;
-    const username = req.body.username
+
+    let userId;
+    let username;
+    let publicPage;
+
+    if (req.body.userID) {
+        userId = req.body.userID;
+        username = req.body.username
+        publicPage = false;
+    } else {
+        userId = 'guest'
+        username = 'guest'
+        publicPage = true;
+    }
+
+    console.log(userId);
+
     let pageTitle = "Untitled";
     let createdTime = new Date();
     let pageID = nanoid(10);
@@ -11,9 +26,9 @@ exports.createPage = async (req, res) => {
 
     try {
         const query = await pool.query('INSERT INTO pages("userID", title, content, "pageID", time_created,' +
-            ' username)' +
-            ' VALUES($1, $2, $3, $4, $5, $6)',
-            [userId, pageTitle, content, pageID, createdTime, username]);
+            ' username, public)' +
+            ' VALUES($1, $2, $3, $4, $5, $6, $7)',
+            [userId, pageTitle, content, pageID, createdTime, username, publicPage]);
         console.log('inserted page');
         res.json({pageID, currentContent: " ", msg: "inserted message"});
     } catch (err) {
