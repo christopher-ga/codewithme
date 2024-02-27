@@ -1,10 +1,14 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useUser} from "@clerk/clerk-react";
+import ToggleSwitch from "./ToggleSwitch.jsx";
 
 export default function ShareModal({isOpen, modalContent, handleModal}) {
 
     const [shareError, setShareError] = useState();
     const [shareUsername, setShareUsername] = useState("");
+    const [listOfSharedUsers, setListOfSharedUsers] = useState([]);
+
+
     const userData = useUser();
 
     const pageID = modalContent.pageID;
@@ -13,19 +17,34 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
 
 
     const handleShare = async () => {
-
         const response = await fetch(`http://localhost:3636/sharepage?shareusername=${shareUsername}&pageID=${pageID}&ownerusername=${username}`)
 
         if (!response.ok) {
             console.log(await response.json())
             return;
         }
-
         const data = await response.json();
-
-
-
     }
+
+    useEffect(() => {
+        async function getSharedPagesUserList () {
+            const response = await fetch(`http://localhost:3636/getsharedpages?pageID=${pageID}`);
+
+            if (!response.ok) {
+
+                return;
+            }
+
+            return await response.json();
+        }
+
+        if (isOpen) {
+            getSharedPagesUserList().then((data) => {
+                setListOfSharedUsers(data);
+            });
+        }
+
+    }, [isOpen])
 
 
     return (
@@ -50,8 +69,15 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
 
                         <div className="flex mt-3 gap-2 flex-col">
                             <p>People with access</p>
-
+                            <div>
+                                {
+                                    listOfSharedUsers.map((el, i) => (
+                                        <p key={i}>{el.share_with_username}</p>
+                                    ))
+                                }
+                            </div>
                             <p>General access</p>
+                            <ToggleSwitch></ToggleSwitch>
 
                             <div className="mt-6 flex justify-between flex-row">
                                 <button className="bg-white text-black px-4 py-2  border-2 border-black rounded heavy-shadow">Copy Link</button>

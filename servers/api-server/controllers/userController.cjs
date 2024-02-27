@@ -53,11 +53,21 @@ exports.getUserPages = async (req, res) => {
         const {rows} = await pool.query('SELECT title, "pageID", time_created FROM pages WHERE' +
             ' "userID"' +
             ' = $1', [userID])
-
-
-
         res.json(rows)
     } catch (err) {
         console.log("getuserpages route error:", err.message);
     }
+}
+
+exports.getSharedUserPages = async (req, res) => {
+    let pageID = req.query.pageID;
+
+    try {
+        const {rows} = await pool.query(`SELECT share_with_username FROM share_pages WHERE page_id=$1`, [pageID])
+        res.json(rows);
+
+    } catch (err) {
+        console.log('get shared pages err', err.message);
+    }
+
 }

@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const {checkAccess, userLogIn, getUserPages} = require('./controllers/userController.cjs')
+const {checkAccess, userLogIn, getUserPages, getSharedUserPages} = require('./controllers/userController.cjs')
 const {createPage, getPage, savePageContent, getPageContent, deletePage, sharePage, getSharedPages, saveTitle} = require('./controllers/pageController.cjs')
 const http = require('http');
 const {Server} = require("socket.io");
@@ -24,6 +24,8 @@ const io = new Server(server, {
 app.post('/userlogin', userLogIn);
 
 app.get('/checkaccess', checkAccess);
+
+app.get('/getsharedpages', getSharedUserPages);
 
 app.get('/getuserpages', getUserPages);
 
