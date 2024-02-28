@@ -2,6 +2,9 @@ import {useUser} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
+
 export default function MyPagesTable({handleModal}) {
 
   const [userPages, setUserPages] = useState([]);
@@ -37,7 +40,7 @@ export default function MyPagesTable({handleModal}) {
 
   const deletePage = async (pageID) => {
     console.log('got this page id', pageID)
-    const response = await fetch(`http://localhost:3636/deletepage?pageId=${pageID}`)
+    const response = await fetch(`${hostUrl}/deletepage?pageId=${pageID}`)
 
     if (!response.ok) {
       return;
@@ -54,7 +57,7 @@ export default function MyPagesTable({handleModal}) {
       const userID = userData.user.id;
 
       async function fetchUserPages() {
-        const response = await fetch(`http://localhost:3636/getuserpages?userID=${userID}`)
+        const response = await fetch(`${hostUrl}/getuserpages?userID=${userID}`)
         const data = await response.json();
 
         console.log(data);

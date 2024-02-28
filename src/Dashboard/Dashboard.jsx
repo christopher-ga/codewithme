@@ -31,7 +31,7 @@ export default function Dashboard() {
                 <DashboardHeader/>
                 <DashboardOptions showSharedTable={showSharedTable} handleSharedPages={handleSharedPages} handleMyPages={handleMyPages}/>
                 {!showSharedTable && <MyPagesTable  handleModal={handleModal} /> }
-                {showSharedTable && <SharedPagesTable ></SharedPagesTable>}
+                {showSharedTable && <SharedPagesTable showSharedTable={showSharedTable} ></SharedPagesTable>}
                 <ShareModal handleModal={handleModal} modalContent={modalContent} isOpen={isModalOpen} ></ShareModal>
             </div>
         </>

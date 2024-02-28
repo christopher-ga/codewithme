@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 import {useUser} from "@clerk/clerk-react";
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 export default function NewPageButton() {
     const [navigateData, setNavigateData] = useState(null);
@@ -11,7 +13,7 @@ export default function NewPageButton() {
     const handleCreatePage = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:3636/createpage`, {
+        const response = await fetch(`${hostUrl}/createpage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

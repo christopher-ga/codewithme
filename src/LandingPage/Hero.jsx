@@ -1,6 +1,7 @@
 import {Navigate, useNavigate} from "react-router-dom";
 import {SignInButton, SignOutButton} from "@clerk/clerk-react";
 import {useState} from "react";
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 export default function Hero() {
 
@@ -10,7 +11,7 @@ export default function Hero() {
 
     const createPublicPage = async () => {
 
-        const response = await fetch('http://localhost:3636/createpage', {
+        const response = await fetch(`${baseUrl}/createpage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

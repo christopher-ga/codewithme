@@ -1,3 +1,5 @@
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function SaveButton({editorRef, pageId, pageTitle}) {
 
     console.log(pageTitle, pageId)
@@ -5,7 +7,7 @@ export default function SaveButton({editorRef, pageId, pageTitle}) {
         e.preventDefault();
         const currentEditorContent = editorRef.current.getValue();
 
-        const response = await fetch('http://localhost:3636/savepagecontent', {
+        const response = await fetch(`${hostUrl}/savepagecontent`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

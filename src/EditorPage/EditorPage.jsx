@@ -9,6 +9,8 @@ import debounce from "lodash.debounce";
 import {useParams} from "react-router-dom";
 import {useUser} from "@clerk/clerk-react";
 import io from 'socket.io-client';
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function EditorPage() {
 
     const socketRef = useRef(null);
@@ -41,7 +43,7 @@ export default function EditorPage() {
 
     const saveTitle = async (newTitle, pageID) => {
         console.log('save title request going out')
-        const response = await fetch("http://localhost:3636/savetitle", {
+        const response = await fetch(`${hostUrl}/savetitle`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -60,7 +62,7 @@ export default function EditorPage() {
 
     useEffect(() => {
         async function checkAccess() {
-            const request = await fetch(`http://localhost:3636/checkaccess?username=${username}&pageID=${roomId}`)
+            const request = await fetch(`${hostUrl}/checkaccess?username=${username}&pageID=${roomId}`)
             const response = await request.json();
             console.log('access response', response);
 
@@ -78,7 +80,7 @@ export default function EditorPage() {
 
         if (accessPermitted) {
             setAccess(true);
-            socketRef.current = io("http://localhost:3636", {
+            socketRef.current = io(`${hostUrl}`, {
                 query: {roomId, username}
             })
 

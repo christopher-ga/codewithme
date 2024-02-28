@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import {useUser} from "@clerk/clerk-react";
 import ToggleSwitch from "./ToggleSwitch.jsx";
-
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function ShareModal({isOpen, modalContent, handleModal}) {
 
     const [shareError, setShareError] = useState();
@@ -17,7 +18,7 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
 
 
     const handleShare = async () => {
-        const response = await fetch(`http://localhost:3636/sharepage?shareusername=${shareUsername}&pageID=${pageID}&ownerusername=${username}`)
+        const response = await fetch(`${hostUrl}/sharepage?shareusername=${shareUsername}&pageID=${pageID}&ownerusername=${username}&title=${title}`)
 
         if (!response.ok) {
             console.log(await response.json())
@@ -28,7 +29,7 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
 
     useEffect(() => {
         async function getSharedPagesUserList () {
-            const response = await fetch(`http://localhost:3636/getsharedpages?pageID=${pageID}`);
+            const response = await fetch(`${hostUrl}/getuserssharingpage?pageID=${pageID}`);
 
             if (!response.ok) {
 

@@ -9,7 +9,10 @@ import {useParams} from "react-router-dom";
 
 import debounce from "lodash.debounce";
 
-const myURL = "ws://localhost:1235"
+const myWsURL = "ws://localhost:1235"
+const hostWsUrl = import.meta.env.VITE_REACT_APP_YJS_URL;
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 function MonacoEditor({editorRef, theme, language}) {
     const doc = new Y.Doc();
@@ -19,7 +22,7 @@ function MonacoEditor({editorRef, theme, language}) {
 
     useEffect(() => {
         async function getPageContent() {
-            let response = await fetch(`http://localhost:3636/getpagecontent?pageId=${roomId}`)
+            let response = await fetch(`${hostUrl}/getpagecontent?pageId=${roomId}`)
             let data = await response.json();
             setLiveContent(data)
             console.log('page content', data)
@@ -33,7 +36,7 @@ function MonacoEditor({editorRef, theme, language}) {
 
     const savePageContent = async (content, id) => {
         try {
-            const response = await fetch('http://localhost:3636/savepagecontent', {
+            const response = await fetch(`${hostUrl}/savepagecontent`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,7 +68,7 @@ function MonacoEditor({editorRef, theme, language}) {
     function handleEditorDidMount(editor, monaco) {
         editorRef.current = editor;
 
-        const provider = new WebsocketProvider(myURL, roomId, doc)
+        const provider = new WebsocketProvider(hostWsUrl, roomId, doc)
         const type = doc.getText("monaco");
 
         if (type.toString() === "") {

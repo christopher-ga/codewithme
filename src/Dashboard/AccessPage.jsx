@@ -1,17 +1,20 @@
 import {useState} from "react";
 import {useUser} from "@clerk/clerk-react";
 import {Navigate} from "react-router-dom";
-
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function AccessPage() {
 
     const [navigateData, setNavigateData] = useState(null);
     const [pageTitle, setPageTitle] = useState("");
     const userData = useUser();
+
+
     const handleExistingPage = async (e) => {
         e.preventDefault();
         let userId = userData.user.id;
 
-        const response = await fetch(`http://localhost:3636/getpage?userId=${userId}&pageTitle=${pageTitle}`)
+        const response = await fetch(`${hostUrl}/getpage?userId=${userId}&pageTitle=${pageTitle}`)
 
         if (!response.ok) {
             console.log('oops, that does not exist');

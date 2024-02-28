@@ -1,8 +1,9 @@
 import {useUser} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-
-export default function SharedPagesTable({handleModal}) {
+const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
+export default function SharedPagesTable({handleModal, showSharedTable}) {
 
     const [sharedPages, setSharedPages] = useState([]);
     const userData = useUser();
@@ -26,7 +27,7 @@ export default function SharedPagesTable({handleModal}) {
     useEffect(() => {
         if (userData?.user) {
             async function fetchSharedPages() {
-                const response = await fetch(`http://localhost:3636/getsharedpages?username=${username}`)
+                const response = await fetch(`${hostUrl}/getsharedpages?username=${username}`)
                 const data = await response.json();
 
                 console.log(data);
