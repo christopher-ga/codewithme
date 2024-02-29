@@ -1,17 +1,17 @@
 import {Navigate, useNavigate} from "react-router-dom";
 import {SignInButton, SignOutButton} from "@clerk/clerk-react";
 import {useState} from "react";
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+
+const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 export default function Hero() {
-
+    console.log(hostUrl);
     let navigate = useNavigate();
-
     const [navigateData, setNavigateData] = useState(null);
 
     const createPublicPage = async () => {
 
-        const response = await fetch(`${baseUrl}/createpage`, {
+        const response = await fetch(`${hostUrl}/createpage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +30,6 @@ export default function Hero() {
 
     return (
         <div className="background h-screen flex flex-col">
-
                 <div className="">
                     <div className="test px-10 py-10 mx-auto max-w-3xl">
                         <img
@@ -61,7 +60,6 @@ export default function Hero() {
 
                 {/*image container*/}
                 <div className="overflow-hidden flex-grow mx-32 justify-center ">
-
                     <img
                         className="rounded-tr-[50px] rounded-tl-[50px] object-contain "
                         src="/hero.png"

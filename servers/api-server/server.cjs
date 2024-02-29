@@ -1,11 +1,13 @@
-require('dotenv').config({path: '../../.env'});
+require('dotenv').config({path: '../../.env.development'});
 
 const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const {checkAccess, userLogIn, getUserPages, getSharedUserPages} = require('./controllers/userController.cjs')
-const {createPage, getPage, savePageContent, getPageContent, deletePage, sharePage, getSharedPages, saveTitle} = require('./controllers/pageController.cjs')
+const {checkAccess, userLogIn, getUserPages, getListOfSharedUsersForPage} = require('./controllers/userController.cjs')
+const {createPage, getPage, savePageContent, getPageContent, deletePage, sharePage, saveTitle,
+    getAllSharedPagesForUser
+} = require('./controllers/pageController.cjs')
 const http = require('http');
 const {Server} = require("socket.io");
 
@@ -21,11 +23,16 @@ const io = new Server(server, {
     }
 });
 
+app.get('/', (req, res) => {
+    res.json({ message: 'Server is running correctly' });
+});
+
 app.post('/userlogin', userLogIn);
 
 app.get('/checkaccess', checkAccess);
 
-app.get('/getsharedpages', getSharedUserPages);
+app.get('/getuserssharingpage', getListOfSharedUsersForPage);
+app.get('/getsharedpages', getAllSharedPagesForUser);
 
 app.get('/getuserpages', getUserPages);
 
@@ -40,8 +47,6 @@ app.get('/getpagecontent', getPageContent);
 app.get('/deletepage', deletePage);
 
 app.get('/sharepage', sharePage);
-
-app.get('/getsharedpages', getSharedPages);
 
 app.post('/savetitle', saveTitle);
 
@@ -61,9 +66,6 @@ io.on('connection', (socket) => {
         }
     }
 
-    // if (!roomState[roomID].users.includes(username)) {
-    //     roomState[roomID].users.push(username)
-    // }
     roomState[roomID].users.push(username)
     io.to(roomID).emit('userJoin', roomState[roomID].users)
     console.log(roomState[roomID])

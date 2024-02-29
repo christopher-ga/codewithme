@@ -59,7 +59,7 @@ exports.getUserPages = async (req, res) => {
     }
 }
 
-exports.getSharedUserPages = async (req, res) => {
+exports.getListOfSharedUsersForPage = async (req, res) => {
     let pageID = req.query.pageID;
 
     try {

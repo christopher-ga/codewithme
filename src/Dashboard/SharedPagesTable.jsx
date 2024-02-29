@@ -10,16 +10,6 @@ export default function SharedPagesTable({handleModal, showSharedTable}) {
     const navigate = useNavigate();
     const username = userData.user.username;
     const deletePage = async (pageID) => {
-        // console.log('got this page id', pageID)
-        // const response = await fetch(`http://localhost:3636/deletepage?pageId=${pageID}`)
-        //
-        // if (!response.ok) {
-        //     return;
-        // }
-        //
-        // const updatedUsers = userPages.filter((e) => e.pageID !== pageID)
-        // console.log(updatedUsers, 'hi')
-        // setUserPages(updatedUsers);
         console.log('delete page');
     }
 

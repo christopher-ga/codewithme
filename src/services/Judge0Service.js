@@ -53,18 +53,13 @@ const checkResult = async (token) => {
     do {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-
         try {
             console.log('checking response')
             response = await axios.request(options);
             statusId = response.data.status.id;
 
             if (statusId !== 1 && statusId !== 2) {
-
-                //process outputs
-                console.log(response);
                 return processData(response.data, statusId)
-                //return atob(response.data.stdout);
             }
 
         } catch (e) {

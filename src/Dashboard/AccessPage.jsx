@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {useUser} from "@clerk/clerk-react";
 import {Navigate} from "react-router-dom";
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function AccessPage() {
 
@@ -22,7 +21,6 @@ export default function AccessPage() {
         }
 
         let data = await response.json();
-        console.log(data);
         let pageName = data.title;
         let pageID = data.pageID;
         let content = data.content;

@@ -8,7 +8,6 @@ export default function Signup() {
     const { isLoaded, signUp, setActive } = useSignUp();
 
     if (!isLoaded) {
-        // handle loading state
         return null;
     }
 

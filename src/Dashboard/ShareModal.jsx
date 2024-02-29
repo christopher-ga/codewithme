@@ -8,14 +8,10 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
     const [shareError, setShareError] = useState();
     const [shareUsername, setShareUsername] = useState("");
     const [listOfSharedUsers, setListOfSharedUsers] = useState([]);
-
-
     const userData = useUser();
-
     const pageID = modalContent.pageID;
     const title = modalContent.pageTitle
     const username = userData.user.username;
-
 
     const handleShare = async () => {
         const response = await fetch(`${hostUrl}/sharepage?shareusername=${shareUsername}&pageID=${pageID}&ownerusername=${username}&title=${title}`)
@@ -30,12 +26,10 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
     useEffect(() => {
         async function getSharedPagesUserList () {
             const response = await fetch(`${hostUrl}/getuserssharingpage?pageID=${pageID}`);
-
             if (!response.ok) {
 
                 return;
             }
-
             return await response.json();
         }
 

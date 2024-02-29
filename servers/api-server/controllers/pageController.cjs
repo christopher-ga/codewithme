@@ -80,7 +80,7 @@ exports.sharePage = async (req, res) => {
     }
 }
 
-exports.getSharedPages = async (req, res) => {
+exports.getAllSharedPagesForUser = async (req, res) => {
     const username = req.query.username
 
     try {
