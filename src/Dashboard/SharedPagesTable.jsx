@@ -1,18 +1,13 @@
 import {useUser} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
-export default function SharedPagesTable({handleModal, showSharedTable}) {
 
+export default function SharedPagesTable({handleModal, showSharedTable}) {
     const [sharedPages, setSharedPages] = useState([]);
     const userData = useUser();
     const navigate = useNavigate();
     const username = userData.user.username;
-    const deletePage = async (pageID) => {
-        console.log('delete page');
-    }
-
 
     useEffect(() => {
         if (userData?.user) {
@@ -32,10 +27,7 @@ export default function SharedPagesTable({handleModal, showSharedTable}) {
         <div className="px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
-
-                    <p className="mt-2 text-sm text-gray-700">
-
-                    </p>
+                    <p className="mt-2 text-sm text-gray-700"></p>
                 </div>
                 <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
 
@@ -73,22 +65,7 @@ export default function SharedPagesTable({handleModal, showSharedTable}) {
                                             {userPages.title}
                                         </td>
                                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{userPages.owner_username}</td>
-
-
-                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-
-                                            <div className="flex gap-10 justify-center flex-column">
-
-                                                <button onClick={(event) => {
-                                                    event.stopPropagation();
-                                                    deletePage(userPages.page_id)
-
-                                                }} className="bg-white text-black px-2 py-2 border-2 border-black rounded heavy-shadow w-10 h-10 flex items-center justify-center">
-                                                    <img src="/icons8-trash-48.png" alt="" className="w-full h-full"/>
-                                                </button>
-                                            </div>
-                                        </td>
-
+                                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500"></td>
                                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                             <a href="#" className="text-indigo-600 hover:text-indigo-900">
                                                 <span className="sr-only">, {userPages.title}</span>

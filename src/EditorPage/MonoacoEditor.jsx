@@ -2,21 +2,18 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import Editor from '@monaco-editor/react';
 import {WebsocketProvider} from 'y-websocket'
 import {fromUint8Array, toUint8Array} from 'js-base64'
-
 import * as Y from "yjs"
 import {MonacoBinding} from "y-monaco"
 import {useParams} from "react-router-dom";
 
 import debounce from "lodash.debounce";
 
-const myWsURL = "ws://localhost:1235"
 const hostWsUrl = import.meta.env.VITE_REACT_APP_YJS_URL;
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 function MonacoEditor({editorRef, theme, language}) {
-    const doc = new Y.Doc();
 
+    const doc = new Y.Doc();
     const {roomId} = useParams();
     const [liveContent, setLiveContent] = useState("");
 

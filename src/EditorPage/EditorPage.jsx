@@ -1,37 +1,33 @@
-
 import OutputBox from "./OutputBox.jsx";
 import EditorHeader from "./EditorHeader.jsx";
 import MonacoEditorYjsChange from "./MonoacoEditor.jsx";
-
 import {useState, useRef, useEffect, useCallback} from "react";
 import {compileCode} from "../services/Judge0Service.js";
 import debounce from "lodash.debounce";
 import {useParams} from "react-router-dom";
 import {useUser} from "@clerk/clerk-react";
 import io from 'socket.io-client';
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function EditorPage() {
-
-    const socketRef = useRef(null);
-
     const [theme, setTheme] = useState('dark');
     const [language, setLanguage] = useState('javascript')
     const [languageId, setLanguageId] = useState("63");
-
-    const {roomId} = useParams();
-    const userData = useUser();
-
     const [accessPermitted, setAccess] = useState(false);
     const [title, setTitle] = useState("Untitled");
+    const [activeUsers, setActiveUsers] = useState([]);
+    const [processingCode, setProcessingCode] = useState(false);
+    const [compilerResponse, setCompilerResponse] = useState("");
+
+    const editorRef = useRef(null);
+    const socketRef = useRef(null);
+    const {roomId} = useParams();
+    const userData = useUser();
 
     let username;
     if (userData.user) {
         username = userData.user.username
     } else username = 'guest1234'
-
-    const [activeUsers, setActiveUsers] = useState([]);
-    const [processingCode, setProcessingCode] = useState(false);
 
     const handleTitle = (e) => {
         setTitle(e.target.value)
@@ -59,6 +55,18 @@ export default function EditorPage() {
         }
 
     }
+    const handleTheme = (dropDownTheme) => {
+        setTheme(dropDownTheme)
+    }
+
+    const handleCodeSubmission = async () => {
+        setProcessingCode(true);
+        socketRef.current.emit("processingCode")
+        let output = await compileCode(editorRef.current.getValue(), languageId);
+        socketRef.current.emit('finishedProcessingCode', output)
+        setCompilerResponse(output);
+        setProcessingCode(false);
+    }
 
     useEffect(() => {
         async function checkAccess() {
@@ -77,7 +85,6 @@ export default function EditorPage() {
 
 
     useEffect(() => {
-
         if (accessPermitted) {
             setAccess(true);
             socketRef.current = io(`${hostUrl}`, {
@@ -117,22 +124,6 @@ export default function EditorPage() {
         }
     }, [title])
 
-    const handleTheme = (dropDownTheme) => {
-        setTheme(dropDownTheme)
-    }
-
-    const [compilerResponse, setCompilerResponse] = useState("");
-
-    //reference to the editor
-    const editorRef = useRef(null);
-    const handleCodeSubmission = async () => {
-        setProcessingCode(true);
-        socketRef.current.emit("processingCode")
-        let output = await compileCode(editorRef.current.getValue(), languageId);
-        socketRef.current.emit('finishedProcessingCode', output)
-        setCompilerResponse(output);
-        setProcessingCode(false);
-    }
 
     return (
         <>

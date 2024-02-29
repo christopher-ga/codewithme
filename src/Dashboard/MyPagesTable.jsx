@@ -2,7 +2,6 @@ import {useUser} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 export default function MyPagesTable({handleModal}) {

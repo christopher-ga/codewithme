@@ -1,17 +1,14 @@
 require('dotenv').config({path: '../../.env.development'});
 
+const {checkAccess, userLogIn, getUserPages, getListOfSharedUsersForPage} = require('./controllers/userController.cjs')
+const {createPage, getPage, savePageContent, getPageContent, deletePage, sharePage, saveTitle, getAllSharedPagesForUser} = require('./controllers/pageController.cjs')
+
 const express = require('express');
 const cors = require('cors');
-const app = express();
-
-const {checkAccess, userLogIn, getUserPages, getListOfSharedUsersForPage} = require('./controllers/userController.cjs')
-const {createPage, getPage, savePageContent, getPageContent, deletePage, sharePage, saveTitle,
-    getAllSharedPagesForUser
-} = require('./controllers/pageController.cjs')
 const http = require('http');
 const {Server} = require("socket.io");
 
-
+const app = express();
 app.use(express.json());
 app.use(cors());
 
@@ -32,6 +29,7 @@ app.post('/userlogin', userLogIn);
 app.get('/checkaccess', checkAccess);
 
 app.get('/getuserssharingpage', getListOfSharedUsersForPage);
+
 app.get('/getsharedpages', getAllSharedPagesForUser);
 
 app.get('/getuserpages', getUserPages);
@@ -82,12 +80,12 @@ io.on('connection', (socket) => {
         io.to(roomID).emit('userDisconnect', (roomState[roomID].users))
     })
 
-    socket.on('titleChange', (data) => {
-        io.to(roomID).emit("newTitle", (data))
-    })
-
     socket.on('connected', (data) => {
         console.log(data);
+    })
+
+    socket.on('titleChange', (data) => {
+        io.to(roomID).emit("newTitle", (data))
     })
 
     socket.on('processingCode', () => {

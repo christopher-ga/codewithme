@@ -99,7 +99,6 @@ exports.savePageContent = async (req, res) => {
 
     let timeUpdated = new Date();
 
-
     try {
         console.log(pageID, content, pageTitle);
         const query = await pool.query('UPDATE pages SET content=$1 WHERE "pageID"=$2', [content, pageID]);

@@ -1,6 +1,8 @@
 import Profile from "../EditorPage/Profile.jsx";
+import {useUser} from "@clerk/clerk-react";
 
 export default function DashboardHeader() {
+    const username = useUser().user.username
     return (
         <>
             <div className="background-dashboard-nav">
@@ -14,7 +16,7 @@ export default function DashboardHeader() {
                     <div className="content-center">
                         <ul className="flex gap-x-12">
                             <li>
-                                Dashboard
+                                Welcome {username}
                             </li>
                         </ul>
                     </div>

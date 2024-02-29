@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 import {useUser} from "@clerk/clerk-react";
-const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 export default function NewPageButton() {

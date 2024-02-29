@@ -12,7 +12,6 @@ exports.userLogIn = async (req, res) => {
         console.log('error at userlogin route');
         console.log(err.message);
     }
-
 }
 
 exports.checkAccess = async (req, res) => {

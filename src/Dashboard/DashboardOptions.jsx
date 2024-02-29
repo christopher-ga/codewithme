@@ -1,8 +1,6 @@
 import NewPageButton from "./NewPageButton.jsx";
 
 export default function DashboardOptions({handleMyPages, handleSharedPages, showSharedTable}) {
-
-
     return (
         <>
             <div
