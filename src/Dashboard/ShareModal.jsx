@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useUser} from "@clerk/clerk-react";
 import ToggleSwitch from "./ToggleSwitch.jsx";
+import {fetchPagesSharedUserList, sharePageRequest} from "../services/serverRequests.js";
 
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function ShareModal({isOpen, modalContent, handleModal}) {
@@ -13,30 +14,18 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
     const title = modalContent.pageTitle
     const username = userData.user.username;
 
-    const handleShare = async () => {
-        const response = await fetch(`${hostUrl}/sharepage?shareusername=${shareUsername}&pageID=${pageID}&ownerusername=${username}&title=${title}`)
-
-        if (!response.ok) {
-            console.log(await response.json())
-            return;
-        }
-        const data = await response.json();
+    const clickShare = async () => {
+        await sharePageRequest(shareUsername, pageID, username, title)
     }
 
     useEffect(() => {
-        async function getSharedPagesUserList() {
-            const response = await fetch(`${hostUrl}/getuserssharingpage?pageID=${pageID}`);
-            if (!response.ok) {
-
-                return;
-            }
-            return await response.json();
+        async function loadPagesSharedUserList() {
+            const data = await fetchPagesSharedUserList(pageID);
+            setListOfSharedUsers(data);
         }
 
         if (isOpen) {
-            getSharedPagesUserList().then((data) => {
-                setListOfSharedUsers(data);
-            });
+            loadPagesSharedUserList();
         }
 
     }, [isOpen])
@@ -59,7 +48,7 @@ export default function ShareModal({isOpen, modalContent, handleModal}) {
                             <input value={shareUsername} onChange={(e) => {
                                 setShareUsername(e.target.value)
                             }} type="text"/>
-                            <button onClick={handleShare}
+                            <button onClick={clickShare}
                                     className="bg-white text-black px-4 py-2  border-2 border-black rounded heavy-shadow">SHARE
                             </button>
 

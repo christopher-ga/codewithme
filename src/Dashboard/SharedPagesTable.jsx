@@ -1,24 +1,25 @@
 import {useUser} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {fetchUserSharedPagesRequest} from "../services/serverRequests.js";
+
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
 export default function SharedPagesTable({handleModal, showSharedTable}) {
     const [sharedPages, setSharedPages] = useState([]);
     const userData = useUser();
     const navigate = useNavigate();
-    const username = userData.user.username;
+
 
     useEffect(() => {
-        if (userData?.user) {
-            async function fetchSharedPages() {
-                const response = await fetch(`${hostUrl}/getsharedpages?username=${username}`)
-                const data = await response.json();
+        async function loadUserSharedPages(username) {
+            const data = await fetchUserSharedPagesRequest(username)
+            setSharedPages(data)
+        }
 
-                console.log(data);
-                setSharedPages(data)
-            }
-            fetchSharedPages();
+        if (userData?.user) {
+            const username = userData.user.username;
+            loadUserSharedPages(username);
         }
     }, [])
 
@@ -40,15 +41,18 @@ export default function SharedPagesTable({handleModal, showSharedTable}) {
                             <table className="min-w-full c divide-y  divide-gray-300">
                                 <thead className="bg-gray-50 ">
                                 <tr>
-                                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                    <th scope="col"
+                                        className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                         Page
                                     </th>
 
-                                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    <th scope="col"
+                                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                                         OWNER
                                     </th>
 
-                                    <th scope="col" className="w-1/5 px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                    <th scope="col"
+                                        className="w-1/5 px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
 
                                     </th>
 
