@@ -1,6 +1,8 @@
 import {useUser} from "@clerk/clerk-react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {deletePageRequest} from "../services/serverRequests.js";
+// import {deletePage} from "../services/serverRequests.js";
 
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 
@@ -37,16 +39,9 @@ export default function MyPagesTable({handleModal}) {
     return metric + " " + phrase
   }
 
-  const deletePage = async (pageID) => {
-    console.log('got this page id', pageID)
-    const response = await fetch(`${hostUrl}/deletepage?pageId=${pageID}`)
-
-    if (!response.ok) {
-      return;
-    }
-
+  const clickDeletePage = async (pageID) => {
+    await deletePageRequest(pageID)
     const updatedUsers = userPages.filter((e) => e.pageID !== pageID)
-    console.log(updatedUsers, 'hi')
     setUserPages(updatedUsers);
   }
 
@@ -129,7 +124,7 @@ export default function MyPagesTable({handleModal}) {
 
                           <button onClick={(event) => {
                             event.stopPropagation();
-                            deletePage(userPages.pageID)
+                            clickDeletePage(userPages.pageID)
 
                           }} className="bg-white text-black px-2 py-2 border-2 border-black rounded heavy-shadow w-10 h-10 flex items-center justify-center">
                               <img src="/icons8-trash-48.png" alt="" className="w-full h-full"/>
