@@ -7,6 +7,7 @@ import debounce from "lodash.debounce";
 import {useParams} from "react-router-dom";
 import {useUser} from "@clerk/clerk-react";
 import io from 'socket.io-client';
+import {checkAccessRequest, saveTitleRequest} from "../services/serverRequests.js";
 
 const hostUrl = import.meta.env.VITE_REACT_APP_HOST_URL;
 export default function EditorPage() {
@@ -35,26 +36,8 @@ export default function EditorPage() {
     }
 
     const debounceSaveTitle = useCallback(
-        debounce((newTitle, id) => saveTitle(newTitle, id), 2000), []);
+        debounce((newTitle, id) => saveTitleRequest(newTitle, id), 2000), []);
 
-    const saveTitle = async (newTitle, pageID) => {
-        console.log('save title request going out')
-        const response = await fetch(`${hostUrl}/savetitle`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title: newTitle,
-                roomId: pageID
-            })
-        })
-
-        if (!response.ok) {
-            throw new Error('Failed to save title');
-        }
-
-    }
     const handleTheme = (dropDownTheme) => {
         setTheme(dropDownTheme)
     }
@@ -69,10 +52,9 @@ export default function EditorPage() {
     }
 
     useEffect(() => {
-        async function checkAccess() {
-            const request = await fetch(`${hostUrl}/checkaccess?username=${username}&pageID=${roomId}`)
-            const response = await request.json();
-            console.log('access response', response);
+        async function determineUserAccess() {
+
+            const response = await checkAccessRequest(username, roomId)
 
             if (response.access === "Permitted") {
                 setAccess(true)
@@ -80,7 +62,7 @@ export default function EditorPage() {
             }
         }
 
-        checkAccess();
+        determineUserAccess();
     }, []);
 
 
